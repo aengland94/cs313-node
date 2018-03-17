@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var smath = require('./smath')
 var postal = require('./postal')
+var weather = require('./weather')
 var bodyParser = require('body-parser');
 
 app.set('port', (process.env.PORT || 5000))
@@ -28,6 +29,22 @@ app.get('/math', (req, res) => {
 app.post('/postal', (req, res) => {
       var params = postal(req.body.type, req.body.weight, res)
       res.render('pages/postalResults', params)   
+})
+
+app.post('/almanac', (req, res) => {  
+})
+
+app.post('/astronomy', (req, res) => {  
+})
+
+app.post('/conditions', (req, res) => { 
+   weather.getWeather('conditions', req.body.city, req.body.state, req.body.country, (data) => {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(data))
+   }) 
+})
+
+app.post('/forcast', (req, res) => {  
 })
 
 app.listen(app.get('port'), function() {
