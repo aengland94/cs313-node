@@ -30,7 +30,7 @@ function getWeather(type, city, state, country, callback)
       res.on('data', (chunk) => {rawData += chunk})
       res.on('end', () => {
          var parsedData = JSON.parse(rawData)
-         console.log(parsedData['current_observation'])
+         console.log(parsedData)
          callback(parsedData)
       })
       res.on('error', (e) => {console.error(e.message)})
