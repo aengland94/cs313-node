@@ -4,8 +4,11 @@ module.exports.getWeather = getWeather
 
 function getWeather(type, city, state, country, callback)
 {
-   console.log('inside getWeather()')
-   var options = 'http://api.wunderground.com/api/71c6cb041338f31b/' + type + '/q/ID/Rexburg.json'
+   var cityURL = encodeURIComponent(city.trim())
+   var stateURL = encodeURIComponent(state.trim())
+   var countryURL = encodeURIComponent(country.trim())
+
+   var options = 'http://api.wunderground.com/api/71c6cb041338f31b/' + type + '/q/' + countryURL + '/' + stateURL + '/' + cityURL + '.json'
    
    const req = http.get(options,(res) => {
       console.log('STATUS: ' + res.statusCode)
