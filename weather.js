@@ -1,12 +1,11 @@
 var http = require("http")
-const URL  = require("url").URL
 
 module.exports.getWeather = getWeather
 
 function getWeather(type, city, state, country, callback)
 {
    console.log('inside getWeather()')
-   var options = new URL('http://api.wunderground.com/api/71c6cb041338f31b/' + type + '/q/ID/Rexburg.json')
+   var options = 'http://api.wunderground.com/api/71c6cb041338f31b/' + type + '/q/ID/Rexburg.json'
    
    const req = http.get(options,(res) => {
       console.log('STATUS: ' + res.statusCode)
