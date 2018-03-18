@@ -67,9 +67,11 @@ app.get('/astronomy', (req, res) => {
 })
 
 app.post('/conditions', (req, res) => { 
+   console.log('inside post conditions callback()')
    req.session.city = req.body.city
    req.session.state = req.body.state
    req.session.country = req.body.country
+   console.log('after setting sessions')
    weather.getWeather('conditions', req.body.city, req.body.state, req.body.country, (data) => {
       res.writeHead(200, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify(data))
