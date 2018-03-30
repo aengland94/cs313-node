@@ -169,7 +169,7 @@ function setInit()
 
    //Avg Low
    var avgLow = document.createElement('h4')
-   var avgLowText = document.createTextNode('High: ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
+   var avgLowText = document.createTextNode('Low: ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
    avgLow.appendChild(avgLowText)
    avgLow.setAttribute('class', 'col')
 
@@ -187,7 +187,7 @@ function setInit()
 
    //Rec
    var rec = document.createElement('h2')
-   var recText = document.createTextNode('Averages')
+   var recText = document.createTextNode('Records')
    rec.appendChild(recText)
    rec.setAttribute('class', 'col')
 
@@ -207,7 +207,7 @@ function setInit()
 
    //Rec Low
    var recLow = document.createElement('h4')
-   var recLowText = document.createTextNode('High: ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
+   var recLowText = document.createTextNode('Low: ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
    recLow.appendChild(recLowText)
    recLow.setAttribute('class', 'col')
 
