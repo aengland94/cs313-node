@@ -24,6 +24,10 @@ function getAstronomy()
    $.get("/astronomy", function(data, status){
       console.log('called astronomy()')
       $('button.astronomy').remove()
+
+      var astronomy = makeNewAstronomy(data)
+
+      $('div.conditions').after(astronomy)
    })
 }
 
@@ -119,16 +123,16 @@ function setInit()
  {
    //make buttons
    var forecast = makeNewButton('Forecast')
-   forecast.setAttribute('class', 'forecast')
+   forecast.setAttribute('class', 'col forecast')
 
    var almanac = makeNewButton('Almanac')
-   almanac.setAttribute('class', 'almanac')
+   almanac.setAttribute('class', 'col almanac')
    
    var astronomy = makeNewButton('Astronomy')
-   astronomy.setAttribute('class', 'astronomy')
+   astronomy.setAttribute('class', 'col astronomy')
 
    var conditions = makeNewButton('Update Conditions')
-   conditions.setAttribute('class', 'conditions')
+   conditions.setAttribute('class', 'col conditions')
 
    //add buttons to nav
    var nav = document.createElement('nav')
@@ -169,7 +173,7 @@ function setInit()
 
    //Avg Low
    var avgLow = document.createElement('h4')
-   var avgLowText = document.createTextNode('Low: ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
+   var avgLowText = document.createTextNode('Low:  ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
    avgLow.appendChild(avgLowText)
    avgLow.setAttribute('class', 'col')
 
@@ -207,7 +211,7 @@ function setInit()
 
    //Rec Low
    var recLow = document.createElement('h4')
-   var recLowText = document.createTextNode('Low: ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
+   var recLowText = document.createTextNode('Low:  ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
    recLow.appendChild(recLowText)
    recLow.setAttribute('class', 'col')
 
@@ -240,7 +244,89 @@ function setInit()
  */
  function makeNewAstronomy(data)
  {
+   //Sun
+   var sun = document.createElement('h2')
+   var sunText = document.createTextNode('Sun')
+   sun.appendChild(sunText)
+   sun.setAttribute('class', 'col')
+
+   var sunrow = document.createElement('div')
+   sunrow.setAttribute('class', 'row')
+   sunrow.appendChild(sun)
+
+   //Sun rise
+   var sunRise = document.createElement('h4')
+   var sunRiseText = document.createTextNode('Rise: 0' + data.moon_phase.sunrise.hour + ':' + data.moon_phase.sunrise.minute)
+   sunRise.appendChild(sunRiseText)
+   sunRise.setAttribute('class', 'col')
+
+   var sunRiserow = document.createElement('div')
+   sunRiserow.setAttribute('class', 'row')
+   sunRiserow.appendChild(sunRise)
+
+   //Sun set
+   var sunSet = document.createElement('h4')
+   var sunSetText = document.createTextNode('Set: ' + data.moon_phase.sunset.hour + ':' + data.moon_phase.sunset.minute)
+   sunSet.appendChild(sunSetText)
+   sunSet.setAttribute('class', 'col')
+
+   var sunSetrow = document.createElement('div')
+   sunSetrow.setAttribute('class', 'row')
+   sunSetrow.appendChild(sunSet)
+
+   //Sun col
+   var suncol = document.createElement('div')
+   suncol.appendChild(sunrow)
+   suncol.appendChild(sunRiserow)
+   suncol.appendChild(sunSetrow)
+   suncol.setAttribute('class', 'col')
+
+
+   //Mon
+   var mon = document.createElement('h2')
+   var monText = document.createTextNode('Moon')
+   mon.appendChild(monText)
+   mon.setAttribute('class', 'col')
+
+   var monrow = document.createElement('div')
+   monrow.setAttribute('class', 'row')
+   monrow.appendChild(mon)
+
+   //Mon rise
+   var monRise = document.createElement('h4')
+   var monRiseText = document.createTextNode('Rise: ' + data.moon_phase.moonrise.hour + ':' + data.moon_phase.moonrise.minute)
+   monRise.appendChild(monRiseText)
+   monRise.setAttribute('class', 'col')
+
+   var monRiserow = document.createElement('div')
+   monRiserow.setAttribute('class', 'row')
+   monRiserow.appendChild(monRise)
+
+   //Mon set
+   var monSet = document.createElement('h4')
+   var monSetText = document.createTextNode('Set: 0' + data.moon_phase.moonset.hour + ':' + data.moon_phase.moonset.minute)
+   monSet.appendChild(monSetText)
+   monSet.setAttribute('class', 'col')
+
+   var monSetrow = document.createElement('div')
+   monSetrow.setAttribute('class', 'row')
+   monSetrow.appendChild(monSet)
+
+   //Mon col
+   var moncol = document.createElement('div')
+   moncol.appendChild(monrow)
+   moncol.appendChild(monRiserow)
+   moncol.appendChild(monSetrow)
+   moncol.setAttribute('class', 'col')
+
+   var row = document.createElement('div')
+   row.appendChild(suncol)
+   row.appendChild(moncol)
+   row.setAttribute('class', 'row')
+
    var astronomy = document.createElement('div')
+   astronomy.appendChild(row)
+   astronomy.setAttribute('class', 'col-md-4 widget astronomy')
 
    return astronomy
  }
