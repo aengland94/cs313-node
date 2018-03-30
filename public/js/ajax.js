@@ -7,6 +7,11 @@ function getAlmanac()
 {
    $.get("/almanac", function(data, status){
       console.log('called almanac()')
+      $('button.almanac').remove()
+
+      var almanac = makeNewAlmanac(data)
+
+      $('div.conditions').after(almanac)
    })
 }
 
@@ -18,6 +23,7 @@ function getAstronomy()
 {
    $.get("/astronomy", function(data, status){
       console.log('called astronomy()')
+      $('button.astronomy').remove()
    })
 }
 
@@ -29,6 +35,11 @@ function getConditions()
 {
    $.get("/conditions", function(data, status){
       console.log('called conditions()')
+      
+      //make conditions
+      var conditions = makeNewConditions(data)
+
+      $('.conditions').replaceWith(conditions)
    })
 }
 
@@ -74,6 +85,7 @@ function getForecast()
 {
    $.get("/forecast", function(data, status){
       console.log('called forecast()')
+      $('button.forecast').remove()
    })
 }
 
@@ -89,15 +101,34 @@ function setInit()
    location.empty()
    location.removeAttr('onclick')
    location.append(locaText)
-   
+
+   //make nav
+   var nav = makeNav()
+
+   document.body.appendChild(nav)
+
+   postConditions()
+}
+
+
+/*
+ * MAKE_NAV
+ * returns the nav
+ */
+ function makeNav()
+ {
    //make buttons
    var forecast = makeNewButton('Forecast')
+   forecast.setAttribute('class', 'forecast')
 
    var almanac = makeNewButton('Almanac')
+   almanac.setAttribute('class', 'almanac')
    
    var astronomy = makeNewButton('Astronomy')
+   astronomy.setAttribute('class', 'astronomy')
 
-   var conditions = makeNewButton('Conditions')
+   var conditions = makeNewButton('Update Conditions')
+   conditions.setAttribute('class', 'conditions')
 
    //add buttons to nav
    var nav = document.createElement('nav')
@@ -107,10 +138,112 @@ function setInit()
    nav.appendChild(forecast)
    nav.setAttribute('class', 'row')
 
-   document.body.appendChild(nav)
+   return nav
+ }
 
-   postConditions()
-}
+/*
+ * MAKE_NEW_ALMANAC
+ * returns a new almanac widget defined by params
+ */
+ function makeNewAlmanac(data)
+ {
+   //Avg 
+   var avg = document.createElement('h2')
+   var avgText = document.createTextNode('Averages')
+   avg.appendChild(avgText)
+   avg.setAttribute('class', 'col')
+
+   var avgrow = document.createElement('div')
+   avgrow.setAttribute('class', 'row')
+   avgrow.appendChild(avg)
+
+   //Avg High
+   var avgHigh = document.createElement('h4')
+   var avgHighText = document.createTextNode('High: ' + data.almanac.temp_high.normal.F + ' (' + data.almanac.temp_high.normal.C + ')')
+   avgHigh.appendChild(avgHighText)
+   avgHigh.setAttribute('class', 'col')
+
+   var avgHighrow = document.createElement('div')
+   avgHighrow.setAttribute('class', 'row')
+   avgHighrow.appendChild(avgHigh)
+
+   //Avg Low
+   var avgLow = document.createElement('h4')
+   var avgLowText = document.createTextNode('High: ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
+   avgLow.appendChild(avgLowText)
+   avgLow.setAttribute('class', 'col')
+
+   var avgLowrow = document.createElement('div')
+   avgLowrow.setAttribute('class', 'row')
+   avgLowrow.appendChild(avgLow)
+
+   //Avg col
+   var avgcol = document.createElement('div')
+   avgcol.appendChild(avgrow)
+   avgcol.appendChild(avgHighrow)
+   avgcol.appendChild(avgLowrow)
+   avgcol.setAttribute('class', 'col')
+
+
+   //Rec
+   var rec = document.createElement('h2')
+   var recText = document.createTextNode('Averages')
+   rec.appendChild(recText)
+   rec.setAttribute('class', 'col')
+
+   var recrow = document.createElement('div')
+   recrow.setAttribute('class', 'row')
+   recrow.appendChild(rec)
+
+   //Rec High
+   var recHigh = document.createElement('h4')
+   var recHighText = document.createTextNode('High: ' + data.almanac.temp_high.record.F + ' (' + data.almanac.temp_high.record.C + ')')
+   recHigh.appendChild(recHighText)
+   recHigh.setAttribute('class', 'col')
+
+   var recHighrow = document.createElement('div')
+   recHighrow.setAttribute('class', 'row')
+   recHighrow.appendChild(recHigh)
+
+   //Rec Low
+   var recLow = document.createElement('h4')
+   var recLowText = document.createTextNode('High: ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
+   recLow.appendChild(recLowText)
+   recLow.setAttribute('class', 'col')
+
+   var recLowrow = document.createElement('div')
+   recLowrow.setAttribute('class', 'row')
+   recLowrow.appendChild(recLow)
+
+   //Rec col
+   var reccol = document.createElement('div')
+   reccol.appendChild(recrow)
+   reccol.appendChild(recHighrow)
+   reccol.appendChild(recLowrow)
+   reccol.setAttribute('class', 'col')
+
+   var row = document.createElement('div')
+   row.appendChild(avgcol)
+   row.appendChild(reccol)
+   row.setAttribute('class', 'row')
+
+   var almanac = document.createElement('div')
+   almanac.appendChild(row)
+   almanac.setAttribute('class', 'col-md-4 widget almanac')
+
+   return almanac
+ }
+
+ /*
+ * MAKE_NEW_ASTRONOMY
+ * returns a new astronomy widget defined by params
+ */
+ function makeNewAstronomy(data)
+ {
+   var astronomy = document.createElement('div')
+
+   return astronomy
+ }
 
 /*
  * MAKE_NEW_BUTTON
@@ -126,10 +259,10 @@ function setInit()
 
    return button
  }
-
+ 
  /*
  * MAKE_NEW_CONDITIONS
- * returns a new conditions defined by params
+ * returns a new conditions widget defined by params
  */
  function makeNewConditions(data)
  {
@@ -167,11 +300,34 @@ function setInit()
    temprow.appendChild(icon)
    temprow.setAttribute('class', 'row')
 
+   //updated string
+   var updated = document.createElement('h4')
+   var updText = document.createTextNode(data.current_observation.observation_time)
+   updated.appendChild(updText)
+   updated.setAttribute('class', 'col')
+
+   //update row
+   var uprow = document.createElement('div')
+   uprow.appendChild(updated)
+   uprow.setAttribute('class', 'row')
+
    var conditions = document.createElement('div')
    conditions.appendChild(temprow)
-   conditions.setAttribute('class', 'col-md-4')
+   conditions.appendChild(uprow)
+   conditions.setAttribute('class', 'col-md-4 widget conditions')
 
    return conditions
+ }
+
+ /*
+ * MAKE_NEW_FORECAST
+ * returns a new forecast widget defined by params
+ */
+ function makeNewForecast(data)
+ {
+   var forecast = document.createElement('div')
+
+   return forecast
  }
 
  /*

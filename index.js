@@ -18,7 +18,7 @@ app.use(cookieSession({
    keys: ['fhbh->2|BH10C2|^|fcr/c#'],
  
    // Cookie Options
-   maxAge: 1 * 5 * 60 * 1000 // 1 hour
+   maxAge: 1 * 60 * 60 * 1000 // 1 hour
 }))  // for accessing sessions
 
 // views is directory for all template files
