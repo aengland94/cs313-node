@@ -60,7 +60,7 @@ function postConditions()
       var conditions = makeNewConditions(data)
       var wuData = document.createElement('div')
       wuData.appendChild(conditions)
-      wuData.setAttribute('class', 'row')
+      wuData.setAttribute('class', 'row wuData')
 
       //make footer 
       var wuLogo = document.createElement('img')
@@ -90,6 +90,10 @@ function getForecast()
    $.get("/forecast", function(data, status){
       console.log('called forecast()')
       $('button.forecast').remove()
+
+      var forecast = makeNewForecast(data)
+
+      $('div.wuData').append(forecast)
    })
 }
 
@@ -108,7 +112,6 @@ function setInit()
 
    //make nav
    var nav = makeNav()
-
    document.body.appendChild(nav)
 
    postConditions()
@@ -353,11 +356,8 @@ function setInit()
  function makeNewConditions(data)
  {
    //current temp
-   var temperature = document.createElement('h2')
-   var temperaText = document.createTextNode(data.current_observation.temperature_string)
-   temperature.appendChild(temperaText)
-   temperature.setAttribute('class', 'col')
-
+   var temperature = makeNewText('h2', data.current_observation.temperature_string, 'col')
+   
    //temp icon
    var tempicon = document.createElement('img')
    tempicon.setAttribute('src', data.current_observation.icon_url)
@@ -405,15 +405,79 @@ function setInit()
    return conditions
  }
 
+  /*
+ * MAKE_NEW_DIV
+ * returns a new div element defined by params
+ */
+ function makeNewDiv(divClass, children)
+ {
+   var div = document.createElement('div')
+   div.setAttribute('class', divClass)
+
+   children.forEach( (child) => {
+      div.appendChild(child)
+   })
+
+   return div
+ }
+
  /*
  * MAKE_NEW_FORECAST
  * returns a new forecast widget defined by params
  */
  function makeNewForecast(data)
  {
+   var row = document.createElement('div')
+   row.setAttribute('class', 'row')
+
+   var days = data.forecast.simpleforecast.forecastday
+
+   var skippedFirst = false
+   days.forEach( (day) => {
+      if (skippedFirst)
+      {
+         console.log(day)
+         var dateText = day.date.weekday + ', ' + day.date.day + ' ' + day.date.monthname
+         var date = makeNewText('h2', dateText, 'col-md-12')
+         var daterow = makeNewDiv('row', [date])
+
+         var conditions = makeNewText('h3', day.conditions, 'col')
+         var conrow = makeNewDiv('row', [conditions])
+
+         var highText = 'High: ' + day.high.fahrenheit + ' (' + day.high.celsius + ')'
+         var high = makeNewText('h3', highText, 'col-md-6')
+
+         var lowText = 'Low: ' + day.low.fahrenheit + ' (' + day.low.celsius + ')'
+         var low = makeNewText('h3', lowText, 'col-md-6')
+
+         var temprow = makeNewDiv('row', [high, low])
+
+         var col = makeNewDiv('col-md-4 day', [daterow, conrow, temprow])
+
+         row.appendChild(col)
+      }
+      skippedFirst = true
+   })
+
    var forecast = document.createElement('div')
+   forecast.setAttribute('class', 'col-md-12 widget forecast')
+   forecast.appendChild(row)
 
    return forecast
+ }
+
+ /*
+ * MAKE_NEW_TEXT
+ * returns a new text element defined by params
+ */
+ function makeNewText(element, nodeText, nodeClass)
+ {
+   var node = document.createElement(element)
+   var text = document.createTextNode(nodeText)
+   node.appendChild(text)
+   node.setAttribute('class', nodeClass)
+
+   return node
  }
 
  /*
