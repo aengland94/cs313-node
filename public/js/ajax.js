@@ -155,88 +155,43 @@ function setInit()
  function makeNewAlmanac(data)
  {
    //Avg 
-   var avg = document.createElement('h2')
-   var avgText = document.createTextNode('Averages')
-   avg.appendChild(avgText)
-   avg.setAttribute('class', 'col')
-
-   var avgrow = document.createElement('div')
-   avgrow.setAttribute('class', 'row')
-   avgrow.appendChild(avg)
+   var avg = makeNewText('h2', 'Averages', 'col')
+   var avgrow = makeNewDiv('row', [avg])
 
    //Avg High
-   var avgHigh = document.createElement('h4')
-   var avgHighText = document.createTextNode('High: ' + data.almanac.temp_high.normal.F + ' (' + data.almanac.temp_high.normal.C + ')')
-   avgHigh.appendChild(avgHighText)
-   avgHigh.setAttribute('class', 'col')
-
-   var avgHighrow = document.createElement('div')
-   avgHighrow.setAttribute('class', 'row')
-   avgHighrow.appendChild(avgHigh)
+   var avgHighText = 'High: ' + data.almanac.temp_high.normal.F + ' (' + data.almanac.temp_high.normal.C + ')'
+   var avgHigh = makeNewText('h4', avgHighText, 'col')
+   var avgHighrow = makeNewDiv('row', [avgHigh])
 
    //Avg Low
-   var avgLow = document.createElement('h4')
-   var avgLowText = document.createTextNode('Low:  ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')')
-   avgLow.appendChild(avgLowText)
-   avgLow.setAttribute('class', 'col')
-
-   var avgLowrow = document.createElement('div')
-   avgLowrow.setAttribute('class', 'row')
-   avgLowrow.appendChild(avgLow)
+   var avgLowText = 'Low:  ' + data.almanac.temp_low.normal.F + ' (' + data.almanac.temp_low.normal.C + ')'
+   var avgLow = makeNewText('h4', avgLowText, 'col')
+   var avgLowrow = makeNewDiv('row', [avgLow])
 
    //Avg col
-   var avgcol = document.createElement('div')
-   avgcol.appendChild(avgrow)
-   avgcol.appendChild(avgHighrow)
-   avgcol.appendChild(avgLowrow)
-   avgcol.setAttribute('class', 'col')
+   var avgcol = makeNewDiv('col', [avgrow, avgHighrow, avgLowrow])
 
 
    //Rec
-   var rec = document.createElement('h2')
-   var recText = document.createTextNode('Records')
-   rec.appendChild(recText)
-   rec.setAttribute('class', 'col')
-
-   var recrow = document.createElement('div')
-   recrow.setAttribute('class', 'row')
-   recrow.appendChild(rec)
+   var rec = makeNewText('h2', 'Records', 'col')
+   var recrow = makeNewDiv('row', [rec])
 
    //Rec High
-   var recHigh = document.createElement('h4')
-   var recHighText = document.createTextNode('High: ' + data.almanac.temp_high.record.F + ' (' + data.almanac.temp_high.record.C + ')')
-   recHigh.appendChild(recHighText)
-   recHigh.setAttribute('class', 'col')
-
-   var recHighrow = document.createElement('div')
-   recHighrow.setAttribute('class', 'row')
-   recHighrow.appendChild(recHigh)
+   var recHighText = 'High: ' + data.almanac.temp_high.record.F + ' (' + data.almanac.temp_high.record.C + ')'
+   var recHigh = makeNewText('h4', recHighText, 'col')
+   var recHighrow = makeNewDiv('row', [recHigh])
 
    //Rec Low
-   var recLow = document.createElement('h4')
-   var recLowText = document.createTextNode('Low:  ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')')
-   recLow.appendChild(recLowText)
-   recLow.setAttribute('class', 'col')
-
-   var recLowrow = document.createElement('div')
-   recLowrow.setAttribute('class', 'row')
-   recLowrow.appendChild(recLow)
+   var recLowText = 'Low:  ' + data.almanac.temp_low.record.F + ' (' + data.almanac.temp_low.record.C + ')'
+   var recLow = makeNewText('h4', recLowText, 'col')
+   var recLowrow = makeNewDiv('row', [recLow])
 
    //Rec col
-   var reccol = document.createElement('div')
-   reccol.appendChild(recrow)
-   reccol.appendChild(recHighrow)
-   reccol.appendChild(recLowrow)
-   reccol.setAttribute('class', 'col')
+   var reccol = makeNewDiv('col', [recrow, recHighrow, recLowrow])
 
-   var row = document.createElement('div')
-   row.appendChild(avgcol)
-   row.appendChild(reccol)
-   row.setAttribute('class', 'row')
+   var row = makeNewDiv('row', [avgcol, reccol])
 
-   var almanac = document.createElement('div')
-   almanac.appendChild(row)
-   almanac.setAttribute('class', 'col-md-4 widget almanac')
+   var almanac = makeNewDiv('col-md-4 widget almanac', [row])
 
    return almanac
  }
@@ -248,88 +203,43 @@ function setInit()
  function makeNewAstronomy(data)
  {
    //Sun
-   var sun = document.createElement('h2')
-   var sunText = document.createTextNode('Sun')
-   sun.appendChild(sunText)
-   sun.setAttribute('class', 'col')
-
-   var sunrow = document.createElement('div')
-   sunrow.setAttribute('class', 'row')
-   sunrow.appendChild(sun)
+   var sun = makeNewText('h2', 'Sun', 'col')
+   var sunrow = makeNewDiv('row', [sun])
 
    //Sun rise
-   var sunRise = document.createElement('h4')
-   var sunRiseText = document.createTextNode('Rise: 0' + data.moon_phase.sunrise.hour + ':' + data.moon_phase.sunrise.minute)
-   sunRise.appendChild(sunRiseText)
-   sunRise.setAttribute('class', 'col')
-
-   var sunRiserow = document.createElement('div')
-   sunRiserow.setAttribute('class', 'row')
-   sunRiserow.appendChild(sunRise)
+   var sunRiseText = 'Rise: 0' + data.moon_phase.sunrise.hour + ':' + data.moon_phase.sunrise.minute
+   var sunRise = makeNewText('h4', sunRiseText, 'col')
+   var sunRiserow = makeNewDiv('row', [sunRise])
 
    //Sun set
-   var sunSet = document.createElement('h4')
-   var sunSetText = document.createTextNode('Set: ' + data.moon_phase.sunset.hour + ':' + data.moon_phase.sunset.minute)
-   sunSet.appendChild(sunSetText)
-   sunSet.setAttribute('class', 'col')
-
-   var sunSetrow = document.createElement('div')
-   sunSetrow.setAttribute('class', 'row')
-   sunSetrow.appendChild(sunSet)
+   var sunSetText = 'Set: ' + data.moon_phase.sunset.hour + ':' + data.moon_phase.sunset.minute
+   var sunSet = makeNewText('h4', sunSetText, 'col')
+   var sunSetrow = makeNewDiv('row', [sunSet])
 
    //Sun col
-   var suncol = document.createElement('div')
-   suncol.appendChild(sunrow)
-   suncol.appendChild(sunRiserow)
-   suncol.appendChild(sunSetrow)
-   suncol.setAttribute('class', 'col')
+   var suncol = makeNewDiv('col', [sunrow, sunRiserow, sunSetrow])
 
 
    //Mon
-   var mon = document.createElement('h2')
-   var monText = document.createTextNode('Moon')
-   mon.appendChild(monText)
-   mon.setAttribute('class', 'col')
-
-   var monrow = document.createElement('div')
-   monrow.setAttribute('class', 'row')
-   monrow.appendChild(mon)
+   var mon = makeNewText('h2', 'Moon', 'col')
+   var monrow = makeNewDiv('row', [mon])
 
    //Mon rise
-   var monRise = document.createElement('h4')
-   var monRiseText = document.createTextNode('Rise: ' + data.moon_phase.moonrise.hour + ':' + data.moon_phase.moonrise.minute)
-   monRise.appendChild(monRiseText)
-   monRise.setAttribute('class', 'col')
-
-   var monRiserow = document.createElement('div')
-   monRiserow.setAttribute('class', 'row')
-   monRiserow.appendChild(monRise)
+   var monRiseText = 'Rise: ' + data.moon_phase.moonrise.hour + ':' + data.moon_phase.moonrise.minute
+   var monRise = makeNewText('h4', monRiseText, 'col')
+   var monRiserow = makeNewDiv('row', [monRise])
 
    //Mon set
-   var monSet = document.createElement('h4')
-   var monSetText = document.createTextNode('Set: 0' + data.moon_phase.moonset.hour + ':' + data.moon_phase.moonset.minute)
-   monSet.appendChild(monSetText)
-   monSet.setAttribute('class', 'col')
-
-   var monSetrow = document.createElement('div')
-   monSetrow.setAttribute('class', 'row')
-   monSetrow.appendChild(monSet)
+   var monSetText = 'Set: 0' + data.moon_phase.moonset.hour + ':' + data.moon_phase.moonset.minute
+   var monSet = makeNewText('h4', monSetText, 'col')
+   var monSetrow = makeNewDiv('row', [monSet])
 
    //Mon col
-   var moncol = document.createElement('div')
-   moncol.appendChild(monrow)
-   moncol.appendChild(monRiserow)
-   moncol.appendChild(monSetrow)
-   moncol.setAttribute('class', 'col')
+   var moncol = makeNewDiv('col', [monrow, monRiserow, monSetrow])
 
-   var row = document.createElement('div')
-   row.appendChild(suncol)
-   row.appendChild(moncol)
-   row.setAttribute('class', 'row')
+   var row = makeNewDiv('row', [suncol, moncol])
 
-   var astronomy = document.createElement('div')
-   astronomy.appendChild(row)
-   astronomy.setAttribute('class', 'col-md-4 widget astronomy')
+   var astronomy = makeNewDiv('col-md-4 widget astronomy', [row])
 
    return astronomy
  }
@@ -364,43 +274,22 @@ function setInit()
    tempicon.setAttribute('class', 'img-responsive')
 
    //weather label
-   var label = document.createElement('h4')
-   var lText = document.createTextNode(data.current_observation.weather)
-   label.appendChild(lText)
-   label.setAttribute('class', 'col-md-10 col-sm-6')
+   var label = makeNewText('h4', data.current_observation.weather, 'col-md-10 col-sm-6')
 
    //icon row
-   var iconrow = document.createElement('div')
-   iconrow.appendChild(tempicon)
-   iconrow.appendChild(label)
-   iconrow.setAttribute('class', 'row')
+   var iconrow = makeNewDiv('row', [tempicon, label])
 
    //temp/weather icon
-   var icon = document.createElement('div')
-   icon.appendChild(iconrow)
-   icon.setAttribute('class', 'col')
+   var icon = makeNewDiv('col', [iconrow])
    
    //row for temp data
-   var temprow = document.createElement('div')
-   temprow.appendChild(temperature)
-   temprow.appendChild(icon)
-   temprow.setAttribute('class', 'row')
+   var temprow = makeNewDiv('row', [temperature, icon])
 
    //updated string
-   var updated = document.createElement('h4')
-   var updText = document.createTextNode(data.current_observation.observation_time)
-   updated.appendChild(updText)
-   updated.setAttribute('class', 'col')
+   var updated = makeNewText('h4', data.current_observation.observation_time, 'col')
+   var uprow = makeNewDiv('row', [updated])
 
-   //update row
-   var uprow = document.createElement('div')
-   uprow.appendChild(updated)
-   uprow.setAttribute('class', 'row')
-
-   var conditions = document.createElement('div')
-   conditions.appendChild(temprow)
-   conditions.appendChild(uprow)
-   conditions.setAttribute('class', 'col-md-4 widget conditions')
+   var conditions = makeNewDiv('col-md-4 widget conditions', [temprow, uprow])
 
    return conditions
  }
