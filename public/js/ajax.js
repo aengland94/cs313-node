@@ -51,33 +51,39 @@ function getConditions()
  * POST_CONDITIONS
  * posts conditions data from index.js
  */
-function postConditions()
+function postConditions(isInit = true)
 {
    $.post("/conditions", {city: $('#city').val(), state: $('#state').val(), country: $('#country').val()}, function(data, status){
       console.log('called conditions() with post')
-      
-      //make conditions
-      var conditions = makeNewConditions(data)
-      var wuData = document.createElement('div')
-      wuData.appendChild(conditions)
-      wuData.setAttribute('class', 'row wuData')
+      var initRes
+      var wuData
 
-      //make footer 
-      var wuLogo = document.createElement('img')
-      wuLogo.setAttribute('src', data.current_observation.image.url)
-      wuLogo.setAttribute('class', 'img-responsive')
+      if (data.current_observation)
+      {
+         //make conditions
+         initRes = makeNewConditions(data)
+      }
+      else
+      {
+         //location error
+         initRes = makeNewText('h1', 'Unkown Location. Please try another.','col error')
+      }
 
-      var link = document.createElement('a')
-      link.appendChild(wuLogo)
-      link.setAttribute('href', data.current_observation.image.link)
-      link.setAttribute('class', 'col')
-
-      var footer = document.createElement('footer')
-      footer.appendChild(link)
-      footer.setAttribute('class', 'row')
-
-      document.body.appendChild(wuData)
-      document.body.appendChild(footer)
+      if (isInit)
+      {
+         //make div for weather data
+         wuData = makeNewDiv('row wuData', [initRes])
+         document.body.appendChild(wuData)
+         //make footer
+         var footer = makeNewFooter(data)
+         document.body.appendChild(footer)
+      }
+      else
+      {
+         //fill div for weather
+         wuData = $('div.wuData')
+         wuData.append(initRes)
+      }
    })
 }
 
@@ -107,7 +113,7 @@ function setInit()
    var location = $('#location')
    var locaText = document.createTextNode('New Location')
    location.empty()
-   location.removeAttr('onclick')
+   location.attr('onclick', 'newLocation()')
    location.append(locaText)
 
    //make nav
@@ -310,6 +316,28 @@ function setInit()
    return div
  }
 
+/*
+ * MAKE_NEW_FOOTER
+ * returns a new footer defined by params
+ */
+ function makeNewFooter(data)
+ {
+   var wuLogo = document.createElement('img')
+   wuLogo.setAttribute('src', data.current_observation.image.url)
+   wuLogo.setAttribute('class', 'img-responsive')
+
+   var link = document.createElement('a')
+   link.appendChild(wuLogo)
+   link.setAttribute('href', data.current_observation.image.link)
+   link.setAttribute('class', 'col')
+
+   var footer = document.createElement('footer')
+   footer.appendChild(link)
+   footer.setAttribute('class', 'row')
+
+   return footer
+ }
+
  /*
  * MAKE_NEW_FORECAST
  * returns a new forecast widget defined by params
@@ -375,7 +403,8 @@ function setInit()
  */
  function newLocation()
  {
-   //set new location
-
+   //clear last location data
+   $('div.wuData').empty()
    //get conditions
+   postConditions(false)
  }
