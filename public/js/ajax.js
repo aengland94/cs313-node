@@ -65,6 +65,8 @@ function postConditions(isInit = true)
       }
       else
       {
+         //disable nav
+         $('nav').empty()
          //location error
          initRes = makeNewText('h1', 'Unkown Location. Please try another.','col error')
       }
@@ -117,8 +119,7 @@ function setInit()
    location.append(locaText)
 
    //make nav
-   var nav = makeNav()
-   document.body.appendChild(nav)
+   makeNav()
 
    postConditions()
 }
@@ -126,9 +127,9 @@ function setInit()
 
 /*
  * MAKE_NAV
- * returns the nav
+ * creates/resets the nav
  */
- function makeNav()
+ function makeNav(isInit = true)
  {
    //make buttons
    var forecast = makeNewButton('Forecast')
@@ -143,15 +144,26 @@ function setInit()
    var conditions = makeNewButton('Update Conditions')
    conditions.setAttribute('class', 'col conditions')
 
+   var nav
    //add buttons to nav
-   var nav = document.createElement('nav')
-   nav.appendChild(almanac)
-   nav.appendChild(astronomy)
-   nav.appendChild(conditions)
-   nav.appendChild(forecast)
-   nav.setAttribute('class', 'row')
-
-   return nav
+   if (isInit)
+   {
+      nav = document.createElement('nav')
+      nav.appendChild(almanac)
+      nav.appendChild(astronomy)
+      nav.appendChild(conditions)
+      nav.appendChild(forecast)
+      nav.setAttribute('class', 'row')
+      document.body.appendChild(nav)
+   }
+   else
+   {
+      nav = $('nav')
+      nav.append(almanac)
+      nav.append(astronomy)
+      nav.append(conditions)
+      nav.append(forecast)
+   }
  }
 
 /*
@@ -403,8 +415,10 @@ function setInit()
  */
  function newLocation()
  {
-   //clear last location data
+   //reset data
    $('div.wuData').empty()
+   $('nav').empty()
+   makeNav(false)
    //get conditions
    postConditions(false)
  }
