@@ -48,10 +48,11 @@ function getConditions()
 }
 
 /*
- * POST_CONDITIONS
+ * POST_NEW_DATA  
  * posts conditions data from index.js
+ * sets up page accounding to response
  */
-function postConditions(isInit = true)
+function postNewData(isInit = true)
 {
    $.post("/conditions", {city: $('#city').val(), state: $('#state').val(), country: $('#country').val()}, function(data, status){
       console.log('called conditions() with post')
@@ -60,13 +61,13 @@ function postConditions(isInit = true)
 
       if (data.current_observation)
       {
+         //fills the nav if location is found
+         fillNav()
          //make conditions
          initRes = makeNewConditions(data)
       }
       else
       {
-         //disable nav
-         $('nav').empty()
          //location error
          initRes = makeNewText('h1', 'Unkown Location. Please try another.','col error')
       }
@@ -77,7 +78,7 @@ function postConditions(isInit = true)
          wuData = makeNewDiv('row wuData', [initRes])
          document.body.appendChild(wuData)
          //make footer
-         var footer = makeNewFooter(data)
+         var footer = makeNewFooter()
          document.body.appendChild(footer)
       }
       else
@@ -119,17 +120,19 @@ function setInit()
    location.append(locaText)
 
    //make nav
-   makeNav()
+   var nav = document.createElement('nav')
+   nav.setAttribute('class', 'row')
+   document.body.appendChild(nav)
 
-   postConditions()
+   postNewData()
 }
 
 
 /*
- * MAKE_NAV
- * creates/resets the nav
+ * FILL_NAV
+ * Fills the nav with buttons
  */
- function makeNav(isInit = true)
+ function fillNav()
  {
    //make buttons
    var forecast = makeNewButton('Forecast')
@@ -144,26 +147,12 @@ function setInit()
    var conditions = makeNewButton('Update Conditions')
    conditions.setAttribute('class', 'col conditions')
 
-   var nav
    //add buttons to nav
-   if (isInit)
-   {
-      nav = document.createElement('nav')
-      nav.appendChild(almanac)
-      nav.appendChild(astronomy)
-      nav.appendChild(conditions)
-      nav.appendChild(forecast)
-      nav.setAttribute('class', 'row')
-      document.body.appendChild(nav)
-   }
-   else
-   {
-      nav = $('nav')
-      nav.append(almanac)
-      nav.append(astronomy)
-      nav.append(conditions)
-      nav.append(forecast)
-   }
+   var nav = $('nav')
+   nav.append(almanac)
+   nav.append(astronomy)
+   nav.append(conditions)
+   nav.append(forecast)
  }
 
 /*
@@ -330,17 +319,17 @@ function setInit()
 
 /*
  * MAKE_NEW_FOOTER
- * returns a new footer defined by params
+ * returns a new footer
  */
- function makeNewFooter(data)
+ function makeNewFooter()
  {
    var wuLogo = document.createElement('img')
-   wuLogo.setAttribute('src', data.current_observation.image.url)
+   wuLogo.setAttribute('src', 'http://icons.wxug.com/graphics/wu2/logo_130x80.png')
    wuLogo.setAttribute('class', 'img-responsive')
 
    var link = document.createElement('a')
    link.appendChild(wuLogo)
-   link.setAttribute('href', data.current_observation.image.link)
+   link.setAttribute('href', 'http://www.wunderground.com')
    link.setAttribute('class', 'col')
 
    var footer = document.createElement('footer')
@@ -415,10 +404,9 @@ function setInit()
  */
  function newLocation()
  {
-   //reset data
-   $('div.wuData').empty()
+   //clear current data
    $('nav').empty()
-   makeNav(false)
-   //get conditions
-   postConditions(false)
+   $('div.wuData').empty()
+   //get new data
+   postNewData(false)
  }
