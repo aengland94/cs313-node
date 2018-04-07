@@ -57,23 +57,29 @@ function postNewData(isInit = true)
    $.post("/conditions", {city: $('#city').val(), state: $('#state').val(), country: $('#country').val()}, function(data, status){
       console.log('called conditions() with post')
       var initRes
+      var wuLoc
       var wuData
 
       if (data.current_observation)
       {
          //fills the nav if location is found
          fillNav()
+         //set location
+         wuLoc = makeNewText('h2', data.current_observation.observation_location.full, 'row wuLoc')
          //make conditions
          initRes = makeNewConditions(data)
       }
       else
       {
          //location error
-         initRes = makeNewText('h1', 'Unkown Location. Please try another.','col error')
+         wuLoc = makeNewText('h2', 'Unkown Location:', 'row wuLoc error')
+         initRes = makeNewText('h3', 'Please try another.','col error')
       }
 
       if (isInit)
       {
+         //place location
+         document.body.appendChild(wuLoc)
          //make div for weather data
          wuData = makeNewDiv('row wuData', [initRes])
          document.body.appendChild(wuData)
@@ -83,6 +89,8 @@ function postNewData(isInit = true)
       }
       else
       {
+         //fill location
+         $('.wuLoc').replaceWith(wuLoc)
          //fill div for weather
          wuData = $('div.wuData')
          wuData.append(initRes)
@@ -196,9 +204,12 @@ function setInit()
    //Rec col
    var reccol = makeNewDiv('col', [recrow, recHighrow, recLowrow])
 
-   var row = makeNewDiv('row', [avgcol, reccol])
+   var datarow = makeNewDiv('row widgetData', [avgcol, reccol])
 
-   var almanac = makeNewDiv('col-md-4 widget almanac', [row])
+   //create title for widget
+   var titlerow = makeNewText('h2', 'Almanac', 'row widgetTitle')
+
+   var almanac = makeNewDiv('col-md-4 widget almanac', [titlerow, datarow])
 
    return almanac
  }
@@ -244,9 +255,12 @@ function setInit()
    //Mon col
    var moncol = makeNewDiv('col', [monrow, monRiserow, monSetrow])
 
-   var row = makeNewDiv('row', [suncol, moncol])
+   var datarow = makeNewDiv('row widgetData', [suncol, moncol])
 
-   var astronomy = makeNewDiv('col-md-4 widget astronomy', [row])
+   //create title for widget
+   var titlerow = makeNewText('h2', 'Astronomy', 'row widgetTitle')
+
+   var astronomy = makeNewDiv('col-md-4 widget astronomy', [titlerow, datarow])
 
    return astronomy
  }
@@ -296,7 +310,14 @@ function setInit()
    var updated = makeNewText('h4', data.current_observation.observation_time, 'col')
    var uprow = makeNewDiv('row', [updated])
 
-   var conditions = makeNewDiv('col-md-4 widget conditions', [temprow, uprow])
+   //contain data
+   var col = makeNewDiv('col', [temprow, uprow])
+   var datarow = makeNewDiv('row widgetData', [col])
+
+   //create title for widget
+   var titlerow = makeNewText('h2', 'Conditions', 'row widgetTitle')
+
+   var conditions = makeNewDiv('col-md-4 widget conditions', [titlerow, datarow])
 
    return conditions
  }
@@ -345,8 +366,8 @@ function setInit()
  */
  function makeNewForecast(data)
  {
-   var row = document.createElement('div')
-   row.setAttribute('class', 'row')
+   var datarow = document.createElement('div')
+   datarow.setAttribute('class', 'row widgetData')
 
    var days = data.forecast.simpleforecast.forecastday
 
@@ -372,14 +393,15 @@ function setInit()
 
          var col = makeNewDiv('col-md-4 day', [daterow, conrow, temprow])
 
-         row.appendChild(col)
+         datarow.appendChild(col)
       }
       skippedFirst = true
    })
 
-   var forecast = document.createElement('div')
-   forecast.setAttribute('class', 'col-md-12 widget forecast')
-   forecast.appendChild(row)
+   //create title for widget
+   var titlerow = makeNewText('h2', 'Forecast', 'row widgetTitle')
+
+   var forecast = makeNewDiv('col-md-12 widget forecast', [titlerow, datarow])
 
    return forecast
  }

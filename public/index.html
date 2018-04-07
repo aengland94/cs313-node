@@ -11,11 +11,19 @@
    <script src="js/ajax.js"></script>
 </head>
 <body class="container">
-   <div class="row justify-content-around">
-      <input type="text" name="city" id="city" placeholder="City" class="col-md-3">
-      <input type="text" name="state" id="state" placeholder="State" class="col-md-3">
-      <input type="text" name="country" id="country" placeholder="Country" class="col-md-3">
-      <button class="col-md-2" id='location' onclick="setInit()">Search</button>
+   <div class="row header">
+      <div class="col">
+         <div class="row">
+            <h1 class="col">Your Weather App</h1>
+            <img src="img/logo.png" alt="Your Weather App logo" class="img-responsive" />
+         </div>
+         <div class="row justify-content-between">
+            <input type="text" name="city" id="city" placeholder="City" class="col-md-3">
+            <input type="text" name="state" id="state" placeholder="State" class="col-md-3">
+            <input type="text" name="country" id="country" placeholder="Country" class="col-md-3">
+            <button class="col-md-2" id='location' onclick="setInit()">Search</button>
+         </div>
+      </div>
    </div>
 </body>
 </html>
