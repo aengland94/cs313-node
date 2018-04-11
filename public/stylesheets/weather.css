@@ -1,0 +1,41 @@
+/* style sheet for your weather app */
+html 
+{
+   background-color: #d9f2f2; /* light blue */
+}
+
+.header
+{
+   background-color: #70d1ef; /* blue */
+   padding: 5px;
+}
+
+.widget
+{
+   padding: 25px;
+   padding-top: 15px;
+   padding-bottom: 10px;
+}
+
+.widgetData
+{
+   background-color: #d9f2f2; /* light blue */
+   border-radius: 5px;
+}
+
+.wuData
+{
+   background-color: #70d1ef; /* blue */
+}
+
+button 
+{
+   background-color: #ffc957; /* orange */
+}
+
+.day
+{
+   background-color: #70d1ef; /* blue */
+   margin: 10px;
+   border-radius: 5px;
+}
