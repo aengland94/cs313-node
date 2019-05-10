@@ -73,7 +73,7 @@ app.post('/conditions', (req, res) => {
    req.session.country = req.body.country
    console.log('after setting sessions')
    weather.getWeather('conditions', req.body.city, req.body.state, req.body.country, (data) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:4200' })
       res.end(JSON.stringify(data))
    }) 
 })
